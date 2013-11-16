@@ -1,0 +1,28 @@
+
+IDEA:
+LANE   LAPS    LAST LAP     BEST LAP   AVG LAP
+1
+
+       LAPS TO CATCH LEADER    / BEFORE CATHED
+
+
+LANE   LAPS    LAST LAP     BEST LAP   AVG LAP
+2
+
+       LAPS TO CATCH LEADER    / BEFORE CATHED
+
+
+TODO / NOTE TO SELF:
+================================================
+laptimenotifer: parse gpio-event
+                signal with correct signal
+                
+laptime       : modify output to look correct
+
+all	      : make compile / make qmake file
+
+fix all error :D
+
+
+2nd
+build qt5 for pi.
