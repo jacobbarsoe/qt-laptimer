@@ -19,7 +19,7 @@ void Laptime::reset()
   m_lapTime = 0; 
   m_lapAvg = 0;
   m_lapCount = 0;
-  m_lapBest = 0;
+  m_lapBest = 999999999999999;
   m_lapsToCatch = 0;
   m_lastlapTimeABS = 999999999999999;
 }
@@ -35,6 +35,10 @@ void Laptime::new_lap_time(int gpio, double lap)
       qDebug() << diff;
       if (diff > 0) {
 	m_lapTime = diff;
+	m_lapCount++;
+	m_lapAvg = m_lapAvg + (m_lapTime - m_lapAvg)/m_lapCount;
+	if (m_lapTime < m_lapBest)
+	  m_lapBest = m_lapTime;
 	emit update();
       }
     }
