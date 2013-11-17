@@ -11,7 +11,11 @@ Laptime::Laptime(int index, QColor col)
 {
   m_color = col;
   m_lane = index;
+  m_flash = false;
   reset();
+  timer.setSingleShot(false);
+
+  connect(&timer, SIGNAL(timeout()), this, SLOT(newBestTime()));
 }
 
 void Laptime::reset()
@@ -24,22 +28,39 @@ void Laptime::reset()
   m_lastlapTimeABS = 999999999999999;
 }
 
+void Laptime::newBestTime()
+{
+  static int count = 0;
+  if (count % 2 == 0)
+    m_flash = true;
+  else
+    m_flash = false;
+  if (++count % 8 == 0) {
+    timer.stop();
+    m_flash = false;
+  }
+  emit update();
+
+}
+
 void Laptime::new_lap_time(int gpio, double lap)
 {
   if (gpio == m_lane) 
     {
-      qDebug() << lap;
-      qDebug() << m_lastlapTimeABS;
       double diff  = lap - m_lastlapTimeABS;
       m_lastlapTimeABS = lap;
-      qDebug() << diff;
       if (diff > 0) {
 	m_lapTime = diff;
 	m_lapCount++;
 	m_lapAvg = m_lapAvg + (m_lapTime - m_lapAvg)/m_lapCount;
-	if (m_lapTime < m_lapBest)
+	if (m_lapTime < m_lapBest) {
 	  m_lapBest = m_lapTime;
-	emit update();
+	  //if new best make screen flash in timer start
+	  emit update();
+	  timer.start(100);
+	}
+	else
+	  emit update();
       }
     }
 }
@@ -50,7 +71,10 @@ void Laptime::paintEvent(QPaintEvent *ev)
   QPainter painter(this);
   painter.setRenderHint (QPainter:: Antialiasing);
 
-  painter.setBrush(QBrush(m_color));
+  if (m_flash)
+    painter.setBrush(QBrush(m_color.darker(200)));
+  else
+    painter.setBrush(QBrush(m_color));
 
   QPen pen;
   pen.setStyle(Qt::NoPen);
@@ -89,9 +113,12 @@ void Laptime::paintEvent(QPaintEvent *ev)
            QString::number(m_lapAvg, 'f', 3)); //display ms
 
   //laps best
+  double best = 0;
+  if (m_lapBest < 99999999)
+    best = m_lapBest;
   painter.drawText(time4,
            Qt::AlignRight,
-           QString::number(m_lapBest, 'f', 3)); //display ms
+           QString::number(best, 'f', 3)); //display ms
 
   QRect caption1(width()/20,                     0, width()/5, height()/10);
   QRect caption2(width()/2+width()/20 ,          0, width()/5, height()/10);

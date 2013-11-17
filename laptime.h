@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QPaintEvent>
+#include <QTimer>
 
 class Laptime : public QWidget
 {
@@ -19,6 +20,9 @@ class Laptime : public QWidget
  public slots:
   void new_lap_time(int gpio, double time);
 
+ private slots:
+  void newBestTime();
+
  private:
   double  m_lapTime;
   double  m_lastlapTimeABS;
@@ -28,6 +32,8 @@ class Laptime : public QWidget
   double  m_lapsToCatch;
   int     m_lane;
   QColor  m_color;
+  bool    m_flash;
+  QTimer timer;
 };
 
 #endif //LAPTIME_H
