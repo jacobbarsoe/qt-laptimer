@@ -14,15 +14,7 @@ LANE   LAPS    LAST LAP     BEST LAP   AVG LAP
 
 TODO / NOTE TO SELF:
 ================================================
-laptimenotifer: parse gpio-event
-                signal with correct signal
-                
-laptime       : modify output to look correct
 
-all	      : make compile / make qmake file
-
-fix all error :D
-
-
-2nd
-build qt5 for pi.
+race manager 
+  * notify on new race leader
+  * reset function
