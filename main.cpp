@@ -1,6 +1,7 @@
 #include <QtGui>
 #include <QDebug>
 #include <QThread>
+#include <QApplication>
 
 #if BENCHMARK
 static QTime performanceTimer;
