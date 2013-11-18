@@ -72,7 +72,7 @@ void Laptime::paintEvent(QPaintEvent *ev)
   painter.setRenderHint (QPainter:: Antialiasing);
 
   if (m_flash)
-    painter.setBrush(QBrush(m_color.darker(200)));
+    painter.setBrush(QBrush(m_color.lighter(200)));
   else
     painter.setBrush(QBrush(m_color));
 
