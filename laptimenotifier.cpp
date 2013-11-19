@@ -37,7 +37,6 @@ void LaptimeNotifier::connectLane(Laptime *ln)
 
 void LaptimeNotifier::parseData(void)
 {
-  sn->setEnabled(false);
   this->start();
 }
 
@@ -49,7 +48,6 @@ void LaptimeNotifier::run(void)
     int len = file.readLine(buf, 256);
     if ( len != -1 ) { // new line ready
       doParse(new QString(buf));
-      sn->setEnabled(true);
       return;
     }
     msleep(10);
@@ -64,11 +62,9 @@ void LaptimeNotifier::doParse(QString *s)
   double time;
   QStringList data = s->split(" ", QString::SkipEmptyParts);
   if (data.size() > 2) {
-
     lane = data[0].toInt(&ok, 10);
     time = data[2].toDouble(&ok2);
-
     if (ok && ok2) 
-      sig_new_lap(lane, time); 
+      sig_new_lap(lane+10, time); 
   }
 }
